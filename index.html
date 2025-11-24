@@ -325,8 +325,14 @@
     categorySelect.addEventListener("change", renderQuote);
     themeToggleBtn.addEventListener("click", () => {
       document.body.classList.toggle("dark-mode");
-      updateBackgroundBasedOnCategory(categorySelect.value); // reapply based on mode
-    });
+      // Reapply background based on current tag and mode
+      updateBackgroundBasedOnCategory(categorySelect.value);
+      // Force card refresh (just reset style to let CSS take over)
+      const card = document.querySelector('.card');
+      card.style.background = ""; // let CSS dark/light rules apply
+      card.style.color = "";
+});
+
     document.getElementById("share-btn").addEventListener("click", shareQuote);
 
     // Determine today's theme based on day of the week
