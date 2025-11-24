@@ -145,6 +145,12 @@
       transform: translateY(1px);
       box-shadow: none;
     }
+    button:hover {
+      transform: scale(1.03);
+      opacity: 0.9;
+      transition: 0.2s ease-in-out;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
 
     .primary {
       background: var(--accent);
@@ -336,6 +342,11 @@
     });
     themeToggleBtn.addEventListener("click", toggleTheme);
     document.getElementById("share-btn").addEventListener("click", shareQuote);
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        renderQuote();
+      }
+    });
 
     // Determine today's theme based on day of the week
     const todayTheme = weekdayThemes[new Date().getDay()];
