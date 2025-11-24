@@ -285,9 +285,9 @@
     const newQuoteBtn = document.getElementById("new-quote-btn");
     const themeToggleBtn = document.getElementById("theme-toggle-btn");
 
-    function getRandomQuote(tag = "all") {
-      const filtered = tag === "all" ? quotes : quotes.filter(q => q.tag === tag);
-      return filtered[Math.floor(Math.random() * filtered.length)];
+    function getRandomQuote(tag) {
+      const filteredQuotes = quotes.filter(q => q.tag === tag);
+      return filteredQuotes[Math.floor(Math.random() * filteredQuotes.length)];
     }
 
     function renderQuote() {
