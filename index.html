@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Random Quote Generator • Sumedha Vankadara</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Optional favicon -->
+  <!-- <link rel="icon" type="image/x-icon" href="favicon.ico" /> -->
+
+  <style>
+    :root {
+      --bg-light: #f4f4f5;
+      --card-light: #ffffff;
+      --text-light: #111827;
+      --bg-dark: #020617;
+      --card-dark: #0b1120;
+      --text-dark: #e5e7eb;
+      --accent: #4f46e5;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 40px;
+      background: var(--bg-light);
+      color: var(--text-light);
+      transition: background 1s ease-in-out;
+    }
+
+    body.dark {
+      background: radial-gradient(circle at top, #1e293b, #020617);
+      color: var(--text-dark);
+    }
+
+    h2.page-title {
+      font-size: 1.3rem;
+      font-weight: 500;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #555;
+      padding: 0 15px;
+    }
+
+    body.dark .page-title {
+      color: #ccc;
+    }
+
+    .card {
+      background: var(--card-light);
+      padding: 28px 32px;
+      border-radius: 18px;
+      max-width: 520px;
+      width: 90%;
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.16);
+      text-align: center;
+      transition: background 0.3s;
+      animation: fadeIn 0.6s ease-in-out;
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    }
+
+    body.dark .card {
+      background: var(--card-dark);
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.7);
+    }
+
+    .quote-text {
+      font-size: 1.4rem;
+      margin: 10px 0 8px;
+      opacity: 1;
+      transition: opacity 0.4s ease;
+    }
+
+    .quote-author {
+      font-size: 1rem;
+      color: #6b7280;
+      margin-bottom: 16px;
+      transition: opacity 0.4s ease;
+    }
+
+    body.dark .quote-author {
+      color: #9ca3af;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(79, 70, 229, 0.08);
+      color: #4f46e5;
+      margin-bottom: 18px;
+    }
+
+    body.dark .tag {
+      background: rgba(129, 140, 248, 0.18);
+      color: #a5b4fc;
+    }
+
+    select {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      background: transparent;
+      color: inherit;
+      margin-bottom: 6px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.1s, box-shadow 0.1s, background 0.2s, color 0.2s;
+    }
+
+    button:active {
+      transform: translateY(1px);
+      box-shadow: none;
+    }
+
+    .primary {
+      background: var(--accent);
+      color: white;
+      box-shadow: 0 10px 20px rgba(79, 70, 229, 0.35);
+    }
+
+    .secondary {
+      background: transparent;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: inherit;
+    }
+
+    .footer {
+      margin-top: 24px;
+      font-size: 0.8rem;
+      text-align: center;
+      color: gray;
+      max-width: 560px;
+      padding: 0 15px;
+    }
+
+    body.dark .footer {
+      color: #868686;
+    }
+
+    @media (max-width: 500px) {
+      .card {
+        padding: 20px;
+      }
+
+      .quote-text {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <h2 class="page-title">
+    If you need some encouragement...
+  </h2>
+
+  <div class="card">
+    <h1>✨ Random Quote Generator</h1>
+    <p id="theme-info" style="font-size: 0.85rem; margin-top: 5px; color: gray;"></p>
+
+    <div style="margin-bottom: 10px;">
+      <label for="category" style="font-size: 0.8rem;">Filter by category:</label>
+      <select id="category">
+        <option value="all">All</option>
+        <option value="motivation">Motivation</option>
+        <option value="study">Study</option>
+        <option value="self-care">Self-care</option>
+        <option value="eco">Eco</option>
+        <option value="wellness">Wellness</option>
+      </select>
+    </div>
+
+    <div class="tag" id="quote-tag">motivation</div>
+    <div class="quote-text" id="quote-text">Loading quote...</div>
+    <div class="quote-author" id="quote-author">&nbsp;</div>
+
+    <div class="buttons">
+      <button class="primary" id="new-quote-btn">🔁 New Quote</button>
+      <button class="secondary" id="theme-toggle-btn">🌙 Dark Mode</button>
+      <button class="secondary" id="share-btn">📤 Share</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    Created by <strong>Sumedha Vankadara</strong> • 
+    <a href="mailto:sumedhavankadara@gmail.com">Contact</a> • 
+    <a href="https://www.linkedin.com/in/sumedhavankadara" target="_blank">LinkedIn</a><br>
+    <a href="YOUR_GITHUB_REPO_URL" target="_blank">View Code</a><br>
+  </div>
+
+  <script>
+    //typewriter effect
+    function typewriter(element, text) { 
+        element.style.opacity = 0;
+        setTimeout(() => {
+            element.textContent = "";  
+            let i = 0;
+            element.style.opacity = 1;
+            
+            const interval = setInterval(() => {
+                element.textContent += text[i];
+                i++;
+                if (i >= text.length) clearInterval(interval);
+            }, 40); // typing speed
+        }, 200); // slight delay before start
+    }
+
+    const quotes = [
+      { text: "Believe in yourself.", author: "Unknown", tag: "motivation" },
+      { text: "You can do hard things.", author: "Unknown", tag: "motivation" },
+      { text: "Done is better than perfect.", author: "Sheryl Sandberg", tag: "study" },
+      { text: "Small steps every day add up.", author: "Unknown", tag: "study" },
+      { text: "Rest is productive, too.", author: "Unknown", tag: "self-care" },
+      { text: "You don’t have to do everything today.", author: "Unknown", tag: "self-care" },
+      { text: "Your wellbeing matters. Slow down.", author: "Unknown", tag: "self-care" },
+      { text: "Sustainability starts with small choices.", author: "Unknown", tag: "eco" },
+      { text: "Take care of your body; it’s the only place you have to live.", author: "Jim Rohn", tag: "wellness" },
+      { text: "Wellness is not a luxury, it is a priority.", author: "Unknown", tag: "wellness" }
+    ];
+
+    const weekdayThemes = [
+        "motivation",  // Sunday
+        "motivation",  // Monday
+        "study",       // Tuesday
+        "self-care",   // Wednesday
+        "eco",         // Thursday
+        "wellness",    // Friday
+        "self-care"    // Saturday
+];
+
+
+    const textEl = document.getElementById("quote-text");
+    const authorEl = document.getElementById("quote-author");
+    const tagEl = document.getElementById("quote-tag");
+    const categorySelect = document.getElementById("category");
+    const newQuoteBtn = document.getElementById("new-quote-btn");
+    const themeToggleBtn = document.getElementById("theme-toggle-btn");
+
+    function getRandomQuote(tag = "all") {
+      const filtered = tag === "all" ? quotes : quotes.filter(q => q.tag === tag);
+      return filtered[Math.floor(Math.random() * filtered.length)];
+    }
+
+    function renderQuote() {
+      textEl.style.opacity = 0;
+      authorEl.style.opacity = 0;
+
+      setTimeout(() => {
+        const tag = categorySelect.value;
+        const quote = getRandomQuote(tag);
+        
+        updateBackgroundBasedOnCategory(tag);
+
+        typewriter(textEl, "“" + quote.text + "”");
+        authorEl.textContent = "— " + quote.author;
+        tagEl.textContent = quote.tag;
+        textEl.style.opacity = 1;
+        authorEl.style.opacity = 1;
+      }, 200);
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
+      themeToggleBtn.textContent = document.body.classList.contains("dark")
+        ? "☀️ Light Mode"
+        : "🌙 Dark Mode";
+    }
+
+    newQuoteBtn.addEventListener("click", renderQuote);
+    categorySelect.addEventListener("change", renderQuote);
+    themeToggleBtn.addEventListener("click", toggleTheme);
+    document.getElementById("share-btn").addEventListener("click", shareQuote);
+
+    // Determine today's theme based on day of the week
+    const todayTheme = weekdayThemes[new Date().getDay()];
+    categorySelect.value = todayTheme;
+    // Display the theme to the user
+    document.getElementById("theme-info").textContent =
+    `Theme of the day: ${todayTheme.charAt(0).toUpperCase() + todayTheme.slice(1)}`;
+    
+    // Visual cue on category dropdown
+    categorySelect.style.transition = "background-color 0.6s ease";
+    categorySelect.style.backgroundColor = "#d1fae5"; // light green flash
+    setTimeout(() => {
+        categorySelect.style.backgroundColor = "transparent";
+    }, 1000);
+    
+    function updateBackgroundBasedOnCategory(tag) {
+        tag = tag.toLowerCase().trim().replace(/"/g, ""); //prevents capitalization/spacing issues
+        console.log("🧪 FINAL CLEANED TAG →", JSON.stringify(tag)); //debug
+        let gradient;
+        
+        switch (tag) {
+            case "motivation":
+                gradient = "linear-gradient(135deg, #fff7d6, #ffedd5)"; // energetic warm
+                break;
+            case "study":
+                gradient = "linear-gradient(135deg, #e0f2fe, #dbeafe)"; // calm blue
+                break;
+            case "self-care":
+                gradient = "linear-gradient(135deg, #fce7f3, #fde2e4)"; // soft pink
+                break;
+            case "eco":
+                console.log("Eco theme detected — applying green");
+                gradient = "linear-gradient(135deg, #dcfce7, #d9f99d)"; // green
+                break;
+            case "wellness":
+                gradient = "linear-gradient(135deg, #f4effc, #e7e3f7)"; // lavender
+                break;
+            default:
+                gradient = "linear-gradient(135deg, #eef2ff, #f8fafc)"; // default soft
+        }
+        document.body.style.background = gradient;
+    }
+
+    // Load first quote using selected theme
+    renderQuote();
+
+
+    function shareQuote() {
+         const quote = textEl.textContent;
+         const author = authorEl.textContent;
+         const shareText = `${quote} ${author}`;
+         const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
+         window.open(url, "_blank");
+}
+
+  </script>
+</body>
+
+</html>
