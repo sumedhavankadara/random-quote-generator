@@ -317,15 +317,16 @@
     }
 
     function toggleTheme() {
-      document.body.classList.toggle("dark");
-      themeToggleBtn.textContent = document.body.classList.contains("dark")
+      document.body.classList.toggle("dark-mode");
+      themeToggleBtn.textContent = document.body.classList.contains("dark-mode")
         ? "☀️ Light Mode"
         : "🌙 Dark Mode";
+      updateBackgroundBasedOnCategory(categorySelect.value);
     }
 
     newQuoteBtn.addEventListener("click", renderQuote);
     categorySelect.addEventListener("change", renderQuote);
-   themeToggleBtn.addEventListener("click", () => {
+   themeToggleBtn.addEventListener("click", toggleTheme) => {
      document.body.classList.toggle("dark-mode");
      updateBackgroundBasedOnCategory(categorySelect.value); // Now only handles BG
    });
@@ -371,6 +372,7 @@
       default: gradient = "linear-gradient(135deg, #eef2ff, #f8fafc)";
     }
   }
+  document.body.style.setProperty("background", gradient, "important");
 }
 
     // Load first quote using selected theme
