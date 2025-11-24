@@ -294,7 +294,14 @@
     const themeToggleBtn = document.getElementById("theme-toggle-btn");
 
     function getRandomQuote(tag) {
-      const filteredQuotes = quotes.filter(q => q.tag === tag);
+      let filteredQuotes = [];
+      
+      if (tag === "all") {
+        filteredQuotes = quotes; // include all quotes
+      } else {
+        filteredQuotes = quotes.filter(q => q.tag === tag);
+      }
+      
       return filteredQuotes[Math.floor(Math.random() * filteredQuotes.length)];
     }
 
