@@ -323,7 +323,10 @@
 
     newQuoteBtn.addEventListener("click", renderQuote);
     categorySelect.addEventListener("change", renderQuote);
-    themeToggleBtn.addEventListener("click", toggleTheme);
+    themeToggleBtn.addEventListener("click", () => {
+      document.body.classList.toggle("dark-mode");
+      updateBackgroundBasedOnCategory(categorySelect.value); // reapply based on mode
+    });
     document.getElementById("share-btn").addEventListener("click", shareQuote);
 
     // Determine today's theme based on day of the week
@@ -341,31 +344,54 @@
     }, 1000);
     
     function updateBackgroundBasedOnCategory(tag) {
-        tag = tag.toLowerCase().trim().replace(/"/g, ""); //prevents capitalization/spacing issues
-        console.log("🧪 FINAL CLEANED TAG →", JSON.stringify(tag)); //debug
-        let gradient;
-        
+      tag = tag.toLowerCase().trim().replace(/"/g, "");
+      
+      const isDarkMode = document.body.classList.contains("dark-mode");
+      let gradient;
+      
+      if (isDarkMode) {
+        // Dark Mode Gradients
         switch (tag) {
-            case "motivation":
-                gradient = "linear-gradient(135deg, #fff7d6, #ffedd5)"; // energetic warm
-                break;
-            case "study":
-                gradient = "linear-gradient(135deg, #e0f2fe, #dbeafe)"; // calm blue
-                break;
-            case "self-care":
-                gradient = "linear-gradient(135deg, #fce7f3, #fde2e4)"; // soft pink
-                break;
-            case "eco":
-                console.log("Eco theme detected — applying green");
-                gradient = "linear-gradient(135deg, #dcfce7, #d9f99d)"; // green
-                break;
-            case "wellness":
-                gradient = "linear-gradient(135deg, #f4effc, #e7e3f7)"; // lavender
-                break;
-            default:
-                gradient = "linear-gradient(135deg, #eef2ff, #f8fafc)"; // default soft
+          case "motivation":
+            gradient = "linear-gradient(135deg, #2f2a1f, #1f1b16)";
+            break;
+          case "study":
+            gradient = "linear-gradient(135deg, #1e293b, #0f172a)";
+            break;
+          case "self-care":
+            gradient = "linear-gradient(135deg, #322226, #24191c)";
+            break;
+          case "eco":
+            gradient = "linear-gradient(135deg, #1b2a1b, #112012)";
+            break;
+          case "wellness":
+            gradient = "linear-gradient(135deg, #282235, #1e1b29)";
+            break;
+          default:
+            gradient = "linear-gradient(135deg, #1a1a1a, #111)";
         }
-        document.body.style.background = gradient;
+      } else {
+        // Light Mode Gradients (your improved ones)
+        switch (tag) {
+          case "motivation":
+            gradient = "linear-gradient(135deg, #fff7d6, #ffedd5)";
+            break;
+          case "study":
+            gradient = "linear-gradient(135deg, #e0f2fe, #dbeafe)";
+            break;
+          case "self-care":
+            gradient = "linear-gradient(135deg, #fce7f3, #fde2e4)";
+            break;
+          case "eco":
+            gradient = "linear-gradient(135deg, #dcfce7, #d9f99d)";
+            break;
+          case "wellness":
+            gradient = "linear-gradient(135deg, #f4effc, #e7e3f7)";
+            break;
+          default:
+            gradient = "linear-gradient(135deg, #eef2ff, #f8fafc)";
+        }
+      }
     }
 
     // Load first quote using selected theme
