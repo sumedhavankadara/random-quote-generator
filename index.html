@@ -342,8 +342,8 @@
     });
     themeToggleBtn.addEventListener("click", toggleTheme);
     document.getElementById("share-btn").addEventListener("click", shareQuote);
-    document.addEventListener("keydown", (e) => {
-      if (e.key === 13) {
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.keyCode === 13) {
         renderQuote();
       }
     });
