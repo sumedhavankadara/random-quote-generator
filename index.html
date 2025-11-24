@@ -294,16 +294,14 @@
     const themeToggleBtn = document.getElementById("theme-toggle-btn");
 
     function getRandomQuote(tag) {
-      let filteredQuotes = [];
-      
-      if (tag === "all") {
-        filteredQuotes = quotes; // include all quotes
-      } else {
-        filteredQuotes = quotes.filter(q => q.tag === tag);
-      }
-      
-      return filteredQuotes[Math.floor(Math.random() * filteredQuotes.length)];
-    }
+  let filteredQuotes;
+  if (tag === "all") {
+    filteredQuotes = quotes; // return all quotes
+  } else {
+    filteredQuotes = quotes.filter(q => q.tag === tag);
+  }
+  return filteredQuotes[Math.floor(Math.random() * filteredQuotes.length)];
+}
 
     function renderQuote() {
       textEl.style.opacity = 0;
@@ -332,7 +330,10 @@
     }
 
     newQuoteBtn.addEventListener("click", renderQuote);
-    categorySelect.addEventListener("change", renderQuote);
+    categorySelect.addEventListener("change", () => {
+      updateBackgroundBasedOnCategory(categorySelect.value);
+      renderQuote();
+    });
     themeToggleBtn.addEventListener("click", toggleTheme);
     document.getElementById("share-btn").addEventListener("click", shareQuote);
 
@@ -380,6 +381,7 @@
 
     // Load first quote using selected theme
     renderQuote();
+    updateBackgroundBasedOnCategory(categorySelect.value);
 
 
     function shareQuote() {
