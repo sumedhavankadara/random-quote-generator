@@ -429,7 +429,9 @@
   }
   
   document.getElementById("view-favorites-btn").addEventListener("click", showFavoritesModal);
-  document.getElementById("close-modal").addEventListener("click", closeModal);
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("close-modal").addEventListener("click", closeModal);
+  });
   document.getElementById("next-favorite").addEventListener("click", showNextFavorite);
   document.getElementById("prev-favorite").addEventListener("click", showPreviousFavorite);
 
