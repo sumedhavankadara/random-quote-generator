@@ -186,6 +186,36 @@
         font-size: 1.2rem;
       }
     }
+    
+/* favorites viewer styling */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+    }
+    .modal-content {
+      background: white;
+      margin: 15% auto;
+      padding: 20px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+    }
+    body.dark-mode .modal-content {
+      background: #222;
+      color: #fff;
+    }
+    .close {
+      float: right;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
   </style>
 </head>
 
@@ -220,6 +250,7 @@
       <button class="secondary" id="theme-toggle-btn">🌙 Dark Mode</button>
       <button class="secondary" id="share-btn">📤 Share</button>
       <button id="save-quote-btn" class="secondary">💛 Save Quote</button>
+      <button id="view-favorites-btn" class="secondary">📚 View Favorites</button>
     </div>
   </div>
 
@@ -361,6 +392,55 @@
      }
    }
 
+  // JavaScript functionality for favorites viewer
+   let currentFavoriteIndex = 0;
+    
+   function showFavoritesModal() {
+     const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+     const modal = document.getElementById("favorites-modal");
+     const quoteText = document.getElementById("favorite-quote-text");
+     
+     if (favorites.length === 0) {
+       quoteText.textContent = "No favorites saved yet. Click Save Quote button to add!";
+     } else {
+       quoteText.textContent = favorites[currentFavoriteIndex];
+     }
+     
+     modal.style.display = "block";
+  }
+    
+  function closeModal() {
+     document.getElementById("favorites-modal").style.display = "none";
+  }
+    
+  function showNextFavorite() {
+    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    if (favorites.length > 0) {
+      currentFavoriteIndex = (currentFavoriteIndex + 1) % favorites.length;
+      document.getElementById("favorite-quote-text").textContent = favorites[currentFavoriteIndex];
+    }
+  }
+  function showPreviousFavorite() {
+    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    if (favorites.length > 0) {
+      currentFavoriteIndex = (currentFavoriteIndex - 1 + favorites.length) % favorites.length;
+      document.getElementById("favorite-quote-text").textContent = favorites[currentFavoriteIndex];
+    }
+  }
+  
+  document.getElementById("view-favorites-btn").addEventListener("click", showFavoritesModal);
+  document.getElementById("close-modal").addEventListener("click", closeModal);
+  document.getElementById("next-favorite").addEventListener("click", showNextFavorite);
+  document.getElementById("prev-favorite").addEventListener("click", showPreviousFavorite);
+
+// Close modal if user clicks outside of it
+  window.addEventListener("click", function(event) {
+    if (event.target === document.getElementById("favorites-modal")) {
+      closeModal();
+    }
+  });
+ 
+
     newQuoteBtn.addEventListener("click", renderQuote);
     categorySelect.addEventListener("change", () => {
       updateBackgroundBasedOnCategory(categorySelect.value);
@@ -431,6 +511,14 @@
 }
 
   </script>
+  <div id="favorites-modal" class="modal">
+    <div class="modal-content">
+      <span id="close-modal" class="close">&times;</span>
+      <p id="favorite-quote-text"></p>
+      <button id="prev-favorite" class="secondary"> <- Previous</button>
+      <button id="next-favorite" class="secondary">Next -> </button>
+    </div>
+  </div>
 </body>
 
 </html>
