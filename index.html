@@ -197,6 +197,7 @@
   <div class="card">
     <h1>✨ Random Quote Generator</h1>
     <p id="theme-info" style="font-size: 0.85rem; margin-top: 5px; color: gray;"></p>
+    <p id="save-confirm" style="font-size: 0.75rem; color: #4d7c0f; height: 16px; margin-top: 4px;"></p>
 
     <div style="margin-bottom: 10px;">
       <label for="category" style="font-size: 0.8rem;">Filter by category:</label>
@@ -218,6 +219,7 @@
       <button class="primary" id="new-quote-btn">🔁 New Quote</button>
       <button class="secondary" id="theme-toggle-btn">🌙 Dark Mode</button>
       <button class="secondary" id="share-btn">📤 Share</button>
+      <button id="save-quote-btn" class="secondary">💛 Save Quote</button>
     </div>
   </div>
 
@@ -334,6 +336,30 @@
         : "🌙 Dark Mode";
       updateBackgroundBasedOnCategory(categorySelect.value);
     }
+    
+   function saveFavorite() {
+     const quote = `"${textEl.textContent}" — ${authorEl.textContent}`;
+     let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+     
+     if (!favorites.includes(quote)) {
+       favorites.push(quote);
+       localStorage.setItem("favorites", JSON.stringify(favorites));
+       
+       // Visual confirmation
+       const confirmBox = document.getElementById("save-confirm");
+       confirmBox.textContent = "⭐ Quote saved!";
+       setTimeout(() => {
+         confirmBox.textContent = "";
+       }, 2000);
+     } else {
+    //tell user if already saved
+       const confirmBox = document.getElementById("save-confirm");
+       confirmBox.textContent = "🔁 Already saved";
+       setTimeout(() => {
+         confirmBox.textContent = "";
+       }, 2000);
+     }
+   }
 
     newQuoteBtn.addEventListener("click", renderQuote);
     categorySelect.addEventListener("change", () => {
@@ -341,6 +367,7 @@
       renderQuote();
     });
     themeToggleBtn.addEventListener("click", toggleTheme);
+    document.getElementById("save-quote-btn").addEventListener("click", saveFavorite);
     document.getElementById("share-btn").addEventListener("click", shareQuote);
     document.addEventListener("keydown", function (e) {
       if (e.key === "Enter" || e.keyCode === 13) {
