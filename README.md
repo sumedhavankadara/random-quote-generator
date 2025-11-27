@@ -4,7 +4,6 @@ A minimalist web application that generates quotes based on category, mood, and 
 
 ### Key Features
 - Adaptive quote theming based on weekday
-- Mood-based interaction (stressed / motivated)
 - Smooth typewriter animation
 - Dynamic background reflecting engagement tone
 - Dark mode toggle
