@@ -322,195 +322,195 @@
         "eco",         // Thursday
         "wellness",    // Friday
         "self-care"    // Saturday
-];
+    ];
 
+    document.addEventListener("DOMContentLoaded", () => {
+      const textEl = document.getElementById("quote-text");
+      const authorEl = document.getElementById("quote-author");
+      const tagEl = document.getElementById("quote-tag");
+      const categorySelect = document.getElementById("category");
+      const newQuoteBtn = document.getElementById("new-quote-btn");
+      const themeToggleBtn = document.getElementById("theme-toggle-btn");
 
-    const textEl = document.getElementById("quote-text");
-    const authorEl = document.getElementById("quote-author");
-    const tagEl = document.getElementById("quote-tag");
-    const categorySelect = document.getElementById("category");
-    const newQuoteBtn = document.getElementById("new-quote-btn");
-    const themeToggleBtn = document.getElementById("theme-toggle-btn");
-
-    function getRandomQuote(tag) {
-  let filteredQuotes;
-  if (tag === "all") {
-    filteredQuotes = quotes; // return all quotes
-  } else {
-    filteredQuotes = quotes.filter(q => q.tag === tag);
-  }
-  return filteredQuotes[Math.floor(Math.random() * filteredQuotes.length)];
-}
-
-    function renderQuote() {
-      textEl.style.opacity = 0;
-      authorEl.style.opacity = 0;
-
-      setTimeout(() => {
-        const tag = categorySelect.value;
-        const quote = getRandomQuote(tag);
-        
-        updateBackgroundBasedOnCategory(categorySelect.value);
-
-        typewriter(textEl, "“" + quote.text + "”");
-        authorEl.textContent = "— " + quote.author;
-        tagEl.textContent = quote.tag;
-        textEl.style.opacity = 1;
-        authorEl.style.opacity = 1;
-      }, 200);
-    }
-
-    function toggleTheme() {
-      document.body.classList.toggle("dark-mode");
-      themeToggleBtn.textContent = document.body.classList.contains("dark-mode")
-        ? "☀️ Light Mode"
-        : "🌙 Dark Mode";
-      updateBackgroundBasedOnCategory(categorySelect.value);
-    }
-    
-   function saveFavorite() {
-     const quote = `"${textEl.textContent}" — ${authorEl.textContent}`;
-     let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-     
-     if (!favorites.includes(quote)) {
-       favorites.push(quote);
-       localStorage.setItem("favorites", JSON.stringify(favorites));
-       
-       // Visual confirmation
-       const confirmBox = document.getElementById("save-confirm");
-       confirmBox.textContent = "⭐ Quote saved!";
-       setTimeout(() => {
-         confirmBox.textContent = "";
-       }, 2000);
-     } else {
-    //tell user if already saved
-       const confirmBox = document.getElementById("save-confirm");
-       confirmBox.textContent = "🔁 Already saved";
-       setTimeout(() => {
-         confirmBox.textContent = "";
-       }, 2000);
-     }
-   }
-
-  // JavaScript functionality for favorites viewer
-   let currentFavoriteIndex = 0;
-    
-   function showFavoritesModal() {
-     const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-     const modal = document.getElementById("favorites-modal");
-     const quoteText = document.getElementById("favorite-quote-text");
-     
-     if (favorites.length === 0) {
-       quoteText.textContent = "No favorites saved yet. Click Save Quote button to add!";
-     } else {
-       quoteText.textContent = favorites[currentFavoriteIndex];
-     }
-     
-     modal.style.display = "block";
-  }
-    
-  function closeModal() {
-     document.getElementById("favorites-modal").style.display = "none";
-  }
-    
-  function showNextFavorite() {
-    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    if (favorites.length > 0) {
-      currentFavoriteIndex = (currentFavoriteIndex + 1) % favorites.length;
-      document.getElementById("favorite-quote-text").textContent = favorites[currentFavoriteIndex];
-    }
-  }
-  function showPreviousFavorite() {
-    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    if (favorites.length > 0) {
-      currentFavoriteIndex = (currentFavoriteIndex - 1 + favorites.length) % favorites.length;
-      document.getElementById("favorite-quote-text").textContent = favorites[currentFavoriteIndex];
-    }
-  }
-  
-  document.getElementById("view-favorites-btn").addEventListener("click", showFavoritesModal);
-  document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("close-modal").addEventListener("click", closeModal);
-  });
-  document.getElementById("next-favorite").addEventListener("click", showNextFavorite);
-  document.getElementById("prev-favorite").addEventListener("click", showPreviousFavorite);
-
-// Close modal if user clicks outside of it
-  window.addEventListener("click", function(event) {
-    if (event.target === document.getElementById("favorites-modal")) {
-      closeModal();
-    }
-  });
- 
-
-    newQuoteBtn.addEventListener("click", renderQuote);
-    categorySelect.addEventListener("change", () => {
-      updateBackgroundBasedOnCategory(categorySelect.value);
-      renderQuote();
-    });
-    themeToggleBtn.addEventListener("click", toggleTheme);
-    document.getElementById("save-quote-btn").addEventListener("click", saveFavorite);
-    document.getElementById("share-btn").addEventListener("click", shareQuote);
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Enter" || e.keyCode === 13) {
-        renderQuote();
+      function getRandomQuote(tag) {
+        let filteredQuotes;
+        if (tag === "all") {
+          filteredQuotes = quotes; // return all quotes
+        } else {
+          filteredQuotes = quotes.filter(q => q.tag === tag);
+        }
+        return filteredQuotes[Math.floor(Math.random() * filteredQuotes.length)];
       }
+
+      function renderQuote() {
+        textEl.style.opacity = 0;
+        authorEl.style.opacity = 0;
+
+        setTimeout(() => {
+          const tag = categorySelect.value;
+          const quote = getRandomQuote(tag);
+          
+          updateBackgroundBasedOnCategory(categorySelect.value);
+
+          typewriter(textEl, "“" + quote.text + "”");
+          authorEl.textContent = "— " + quote.author;
+          tagEl.textContent = quote.tag;
+          textEl.style.opacity = 1;
+          authorEl.style.opacity = 1;
+        }, 200);
+      }
+
+      function toggleTheme() {
+        document.body.classList.toggle("dark-mode");
+        themeToggleBtn.textContent = document.body.classList.contains("dark-mode")
+          ? "☀️ Light Mode"
+          : "🌙 Dark Mode";
+        updateBackgroundBasedOnCategory(categorySelect.value);
+      }
+      
+      function saveFavorite() {
+        const quote = `"${textEl.textContent}" — ${authorEl.textContent}`;
+        let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+        
+        if (!favorites.includes(quote)) {
+          favorites.push(quote);
+          localStorage.setItem("favorites", JSON.stringify(favorites));
+          
+          // Visual confirmation
+          const confirmBox = document.getElementById("save-confirm");
+          confirmBox.textContent = "⭐ Quote saved!";
+          setTimeout(() => {
+            confirmBox.textContent = "";
+          }, 2000);
+        } else {
+          // tell user if already saved
+          const confirmBox = document.getElementById("save-confirm");
+          confirmBox.textContent = "🔁 Already saved";
+          setTimeout(() => {
+            confirmBox.textContent = "";
+          }, 2000);
+        }
+      }
+
+      // JavaScript functionality for favorites viewer
+      let currentFavoriteIndex = 0;
+      
+      function showFavoritesModal() {
+        const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+        const modal = document.getElementById("favorites-modal");
+        const quoteText = document.getElementById("favorite-quote-text");
+        
+        if (favorites.length === 0) {
+          quoteText.textContent = "No favorites saved yet. Click Save Quote button to add!";
+        } else {
+          quoteText.textContent = favorites[currentFavoriteIndex];
+        }
+        
+        modal.style.display = "block";
+      }
+      
+      function closeModal() {
+        document.getElementById("favorites-modal").style.display = "none";
+      }
+      
+      function showNextFavorite() {
+        const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+        if (favorites.length > 0) {
+          currentFavoriteIndex = (currentFavoriteIndex + 1) % favorites.length;
+          document.getElementById("favorite-quote-text").textContent = favorites[currentFavoriteIndex];
+        }
+      }
+
+      function showPreviousFavorite() {
+        const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+        if (favorites.length > 0) {
+          currentFavoriteIndex = (currentFavoriteIndex - 1 + favorites.length) % favorites.length;
+          document.getElementById("favorite-quote-text").textContent = favorites[currentFavoriteIndex];
+        }
+      }
+      
+      document.getElementById("view-favorites-btn").addEventListener("click", showFavoritesModal);
+      document.getElementById("close-modal").addEventListener("click", closeModal);
+      document.getElementById("next-favorite").addEventListener("click", showNextFavorite);
+      document.getElementById("prev-favorite").addEventListener("click", showPreviousFavorite);
+
+      // Close modal if user clicks outside of it
+      window.addEventListener("click", function(event) {
+        if (event.target === document.getElementById("favorites-modal")) {
+          closeModal();
+        }
+      });
+
+      newQuoteBtn.addEventListener("click", renderQuote);
+      categorySelect.addEventListener("change", () => {
+        updateBackgroundBasedOnCategory(categorySelect.value);
+        renderQuote();
+      });
+      themeToggleBtn.addEventListener("click", toggleTheme);
+      document.getElementById("save-quote-btn").addEventListener("click", saveFavorite);
+      document.getElementById("share-btn").addEventListener("click", shareQuote);
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.keyCode === 13) {
+          renderQuote();
+        }
+      });
+
+      // Determine today's theme based on day of the week
+      const todayTheme = weekdayThemes[new Date().getDay()];
+      categorySelect.value = todayTheme;
+      // Display the theme to the user
+      document.getElementById("theme-info").textContent =
+        `Theme of the day: ${todayTheme.charAt(0).toUpperCase() + todayTheme.slice(1)}`;
+      
+      // Visual cue on category dropdown
+      categorySelect.style.transition = "background-color 0.6s ease";
+      categorySelect.style.backgroundColor = "#d1fae5"; // light green flash
+      setTimeout(() => {
+          categorySelect.style.backgroundColor = "transparent";
+      }, 1000);
+      
+      // Load first quote using selected theme
+      renderQuote();
+      updateBackgroundBasedOnCategory(categorySelect.value);
     });
 
-    // Determine today's theme based on day of the week
-    const todayTheme = weekdayThemes[new Date().getDay()];
-    categorySelect.value = todayTheme;
-    // Display the theme to the user
-    document.getElementById("theme-info").textContent =
-    `Theme of the day: ${todayTheme.charAt(0).toUpperCase() + todayTheme.slice(1)}`;
-    
-    // Visual cue on category dropdown
-    categorySelect.style.transition = "background-color 0.6s ease";
-    categorySelect.style.backgroundColor = "#d1fae5"; // light green flash
-    setTimeout(() => {
-        categorySelect.style.backgroundColor = "transparent";
-    }, 1000);
-    
     function updateBackgroundBasedOnCategory(tag) {
-  tag = tag.toLowerCase().trim().replace(/"/g, "");
-  const isDark = document.body.classList.contains("dark-mode");
+      tag = tag.toLowerCase().trim().replace(/"/g, "");
+      const isDark = document.body.classList.contains("dark-mode");
 
-  let gradient;
+      let gradient;
 
-  if (isDark) {
-    switch (tag) {
-      case "motivation": gradient = "#1f1b16"; break;
-      case "study": gradient = "#0f172a"; break;
-      case "self-care": gradient = "#24191c"; break;
-      case "eco": gradient = "#112012"; break;
-      case "wellness": gradient = "#1e1b29"; break;
-      default: gradient = "#111";
+      if (isDark) {
+        switch (tag) {
+          case "motivation": gradient = "#1f1b16"; break;
+          case "study": gradient = "#0f172a"; break;
+          case "self-care": gradient = "#24191c"; break;
+          case "eco": gradient = "#112012"; break;
+          case "wellness": gradient = "#1e1b29"; break;
+          default: gradient = "#111";
+        }
+      } else {
+        switch (tag) {
+          case "motivation": gradient = "linear-gradient(135deg, #fff7d6, #ffedd5)"; break;
+          case "study": gradient = "linear-gradient(135deg, #e0f2fe, #dbeafe)"; break;
+          case "self-care": gradient = "linear-gradient(135deg, #fce7f3, #fde2e4)"; break;
+          case "eco": gradient = "linear-gradient(135deg, #dcfce7, #d9f99d)"; break;
+          case "wellness": gradient = "linear-gradient(135deg, #f4effc, #e7e3f7)"; break;
+          default: gradient = "linear-gradient(135deg, #eef2ff, #f8fafc)";
+        }
+      }
+      document.body.style.setProperty("background", gradient, "important");
     }
-  } else {
-    switch (tag) {
-      case "motivation": gradient = "linear-gradient(135deg, #fff7d6, #ffedd5)"; break;
-      case "study": gradient = "linear-gradient(135deg, #e0f2fe, #dbeafe)"; break;
-      case "self-care": gradient = "linear-gradient(135deg, #fce7f3, #fde2e4)"; break;
-      case "eco": gradient = "linear-gradient(135deg, #dcfce7, #d9f99d)"; break;
-      case "wellness": gradient = "linear-gradient(135deg, #f4effc, #e7e3f7)"; break;
-      default: gradient = "linear-gradient(135deg, #eef2ff, #f8fafc)";
-    }
-  }
-  document.body.style.setProperty("background", gradient, "important");
-}
-
-    // Load first quote using selected theme
-    renderQuote();
-    updateBackgroundBasedOnCategory(categorySelect.value);
-
 
     function shareQuote() {
-         const quote = textEl.textContent;
-         const author = authorEl.textContent;
-         const shareText = `${quote} ${author}`;
-         const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
-         window.open(url, "_blank");
-}   
+      const textEl = document.getElementById("quote-text");
+      const authorEl = document.getElementById("quote-author");
+      const quote = textEl.textContent;
+      const author = authorEl.textContent;
+      const shareText = `${quote} ${author}`;
+      const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
+      window.open(url, "_blank");
+    }
 </script>
   
 <div id="favorites-modal" class="modal">
