@@ -186,6 +186,25 @@
         font-size: 1.2rem;
       }
     }
+
+    #unsave-favorite {
+      background-color: #ffcccc; /* light red warning */
+      margin: 10px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s ease-in-out;
+      display: inline-block;
+    }
+    #unsave-favorite:hover {
+      transform: scale(1.03);
+      opacity: 0.9;
+    }
+    body.dark-mode #unsave-favorite {
+      background-color: #a33a3a; 
+      color: white;
+    }
     
 /* favorites viewer styling */
     .modal {
@@ -433,6 +452,25 @@
       document.getElementById("close-modal").addEventListener("click", closeModal);
       document.getElementById("next-favorite").addEventListener("click", showNextFavorite);
       document.getElementById("prev-favorite").addEventListener("click", showPreviousFavorite);
+      document.getElementById("unsave-favorite").addEventListener("click", () => {
+        let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+        
+        if (favorites.length > 0) {
+          favorites.splice(currentFavoriteIndex, 1); // Remove current quote
+          localStorage.setItem("favorites", JSON.stringify(favorites));
+        }
+        
+        if (favorites.length === 0) {
+          document.getElementById("favorite-quote-text").textContent = "No favorites left!";
+          setTimeout(() => closeModal(), 1000);
+        } else {
+          // Adjust index if we're at the end
+          if (currentFavoriteIndex >= favorites.length) {
+            currentFavoriteIndex = 0;
+        }
+        document.getElementById("favorite-quote-text").textContent = favorites[currentFavoriteIndex];
+      }
+    });
 
       // Close modal if user clicks outside of it
       window.addEventListener("click", function(event) {
@@ -519,6 +557,7 @@
    <p id="favorite-quote-text"></p>
    <button id="prev-favorite" class="secondary"> <- Previous</button>
    <button id="next-favorite" class="secondary">Next -> </button>
+   <button id="unsave-favorite">🗑️ Remove</button>
   </div>
 </div>
   
