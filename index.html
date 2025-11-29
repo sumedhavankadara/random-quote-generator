@@ -187,24 +187,26 @@
       }
     }
 
-    #unsave-favorite {
-      background-color: #ffcccc; /* light red warning */
-      margin: 10px;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: transform 0.2s ease-in-out;
-      display: inline-block;
-    }
-    #unsave-favorite:hover {
-      transform: scale(1.03);
-      opacity: 0.9;
-    }
-    body.dark-mode #unsave-favorite {
-      background-color: #a33a3a; 
-      color: white;
-    }
+   #unsave-favorite {
+     background-color: #ffcdd2; 
+     color: #7f1d1d;          
+     margin: 10px;
+     padding: 8px 16px;
+     border: 1px solid rgba(127, 29, 29, 0.3); 
+     border-radius: 999px;
+     cursor: pointer;
+     font-size: 0.85rem;
+     transition: transform 0.2s ease-in-out, opacity 0.2s;
+   } 
+   #unsave-favorite:hover {
+     transform: scale(1.03);
+     opacity: 0.9;
+   }
+  body.dark-mode #unsave-favorite {
+    background-color: #7f1d1d;  
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
     
 /* favorites viewer styling */
     .modal {
